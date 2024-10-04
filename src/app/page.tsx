@@ -1,9 +1,11 @@
 "use client"
 
+
+
 import { Header } from "@/components/Header";
 import { API } from "@/data/API";
 import { ChevronLeftIcon, ChevronRightIcon, Cross1Icon } from '@radix-ui/react-icons';
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function Home() {
