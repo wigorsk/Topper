@@ -1,14 +1,28 @@
 "use client"
 
+import { ChevronLeftIcon, ChevronRightIcon, Cross1Icon } from '@radix-ui/react-icons';
 
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
 
 import { Header } from "@/components/Header";
 import { API } from "@/data/API";
-import { ChevronLeftIcon, ChevronRightIcon, Cross1Icon } from '@radix-ui/react-icons';
-import { useEffect, useState } from "react";
-
 
 export default function Home() {
+
+  const [user, setUser] = useState<any>({})
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    
+    if (!storedUser) {
+      router.push('/signin');
+    } else {
+      setUser(JSON.parse(storedUser));
+    }
+    
+  }, [router])
 
   // className='basis-*'
   const basis = 'basis-20 md:basis-28 lg:basis-44 '
@@ -51,7 +65,10 @@ export default function Home() {
   return (
     <div className="w-screen h-screen bg-neutral-100">
       
-      <Header /> {/* Menu */}
+      {/* Menu */}
+      <Header 
+        username={user.username}
+      /> 
 
       <div className="container mx-auto flex flex-col items-center px-10 gap-5">
 
