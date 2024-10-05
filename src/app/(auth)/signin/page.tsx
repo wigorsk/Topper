@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 
-import { api } from './utils/api';
+import { api } from '../../utils/api';
 
 export default function Home() {
 
