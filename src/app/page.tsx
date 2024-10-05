@@ -10,8 +10,6 @@ import { Table } from "@/components/Table";
 
 export default function Home() {
 
-  const [mealTime, setMealTime] = useState<string>('');
-
   const [user, setUser] = useState<any>({});
   const router = useRouter();
 
@@ -28,34 +26,10 @@ export default function Home() {
 
   const basis = 'basis-20 md:basis-28 lg:basis-44'
 
-  // VARIÁVEIS
-  
-
-  // Expandir alimento selecionado
-  const [popupAddFood, setPopupAddFood] = useState<boolean>(false);
-  const [food, setFood] = useState<number>(0)
-
-
-
   // Gasto Diário
   const tmb:number = 2100;
   const [dailyExpense, setDailyExpense] = useState<number>(1000)
   const remainingKcal:number = tmb - dailyExpense
-
-  // Abrir Pop-up para pesquisar alimentos
-  
-
-  // Abrir Pop-up para adicionar alimento
-  const addFoodButton = (index: number) => {
-    setPopupAddFood(!popupAddFood)
-    setFood(index)
-  }
-
-  // // Adicionar alimento
-  // const AddFoodList = () => {
-  //   setPopupAddFood(false)
-  //   setPopup(false);
-  // }
 
   return (
     <div className="w-screen h-screen bg-neutral-100">

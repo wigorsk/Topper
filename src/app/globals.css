@@ -20,3 +20,14 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer utilities {
+
+  .typeNumber::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .typeNumber {
+    -moz-appearance: textfield;
+  }
+}
