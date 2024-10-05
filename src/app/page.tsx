@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 
 import { Header } from "@/components/Header";
 import { Table } from "@/components/Table";
+import { InfosTable } from '@/components/InfosTable';
+import { Footer } from '@/components/Footer';
 
 export default function Home() {
 
@@ -32,59 +34,47 @@ export default function Home() {
   const remainingKcal:number = tmb - dailyExpense
 
   return (
-    <div className="w-screen h-screen bg-neutral-100">
+    <div className="w-screen bg-neutral-100">
       
-      {/* Menu */}
-      <Header 
-        username={user.username}
-      /> 
+      <Header username={user.username} /> 
 
-      <div className="container mx-auto flex flex-col items-center px-10 gap-5">
+      <div className="container mx-auto pb-20 flex flex-col items-center px-10 gap-5">
 
-        {/* Dia */}
         <div className="flex items-center gap-4 mt-5"> 
           <button><ChevronLeftIcon className=" size-10 "/></button>
-          <h1 className="text-2xl font-bold">Hoje</h1>  
+            <h1 className="text-2xl font-bold">Hoje</h1>  
           <button><ChevronRightIcon className=" size-10 "/></button>
         </div>
 
-        <hr className="w-screen"/> {/* Linha Horizontal */}
+        <hr className="w-screen"/> 
 
-        {/* Gasto Diário */}
         <div className="text-2xl font-bold flex items-center gap-5">
-          <p>{tmb}</p> - <p>{dailyExpense}</p> = <p>{remainingKcal}</p>
+          <p>{tmb}</p> - 
+          <p>{dailyExpense}</p> = 
+          <p>{remainingKcal}</p>
         </div>
 
-        {/* Refeições */}
         <div className="w-full xl:w-10/12 mt-10">
 
+          <InfosTable basis={basis}/>
 
-        {/* Menu da Tabela */}
-        <div className="flex text-center text-xs md:text-sm font-semibold mb-5 sm:mb-0">
-            <h1 className="flex-1"></h1>
-            <h1 className={`${basis}`}>quantidade</h1>
-            <h1 className={`${basis}`}>carboidratos</h1>
-            <h1 className={`${basis}`}>gorduras</h1>
-            <h1 className={`${basis}`}>proteínas</h1>
-        </div>
+          <div className='flex flex-col gap-10'>
 
-        <div className='flex flex-col gap-10'>
+            <Table user={user} mealTime='café da manhã' />
 
-          <Table mealTime='Café da Manhã' />
+            <Table user={user} mealTime='almoço' />
+            
+            <Table user={user} mealTime='jantar' />
 
-          <Table mealTime='Almoço' />
-          
-          <Table mealTime='Jantar' />
+            <Table user={user} mealTime='lanche' />
 
-          <Table mealTime='Lanche' />
+          </div>
 
-        </div>
-
-      </div> 
-       
-
+        </div> 
       </div>
 
+      <Footer />
+
     </div>
-  );
+  )
 }

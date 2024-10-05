@@ -1,5 +1,6 @@
 type Alimento = {
-    mealTime: 'Café da Manhã' | 'Almoço' | 'Jantar' | 'Lanche';
+    id: number;
+    mealTime: 'café da manhã' | 'almoço' | 'lanche' | 'janta';
     nome: string;
     gramas: number;
     calorias: number;
@@ -10,7 +11,8 @@ type Alimento = {
   
   const alimentos: Alimento[] = [
     {
-      mealTime: 'Café da Manhã',
+      id: 1,
+      mealTime: 'café da manhã',
       nome: 'Ovo cozido',
       gramas: 100,
       calorias: 155,
@@ -19,7 +21,8 @@ type Alimento = {
       gorduras: 11
     },
     {
-      mealTime: 'Almoço',
+      id: 2,
+      mealTime: 'almoço',
       nome: 'Arroz branco',
       gramas: 100,
       calorias: 130,
@@ -28,7 +31,8 @@ type Alimento = {
       gorduras: 0.2
     },
     {
-      mealTime: 'Almoço',
+      id: 3,
+      mealTime: 'almoço',
       nome: 'Feijão preto',
       gramas: 100,
       calorias: 77,
@@ -37,7 +41,8 @@ type Alimento = {
       gorduras: 0.5
     },
     {
-      mealTime: 'Jantar',
+      id: 4,
+      mealTime: 'janta',
       nome: 'Peito de frango grelhado',
       gramas: 100,
       calorias: 165,
@@ -46,7 +51,8 @@ type Alimento = {
       gorduras: 3.6
     },
     {
-      mealTime: 'Lanche',
+      id: 5,
+      mealTime: 'lanche',
       nome: 'Batata doce cozida',
       gramas: 100,
       calorias: 86,

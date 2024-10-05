@@ -1,58 +1,50 @@
-type Props = {
-    mealTime: string
-}
-
 import { SearchPopup } from '@/components/SearchPopup';
 import { FoodTable } from '@/components/FoodTable';
-
-import alimentos from '@/data/alimentos'; 
 
 import { api } from '@/app/utils/api'
 import { useEffect, useState } from 'react';
 
-export const Table = ({ mealTime }:Props ) => {
+import alimentos from '@/data/alimentos'; // Data
 
-    const getDataAtual = (): string => {
-        const data = new Date();
-        const ano = data.getFullYear();
-        const mes = String(data.getMonth() + 1).padStart(2, '0'); // Meses começam do 0
-        const dia = String(data.getDate()).padStart(2, '0');
-        return `${ano}-${mes}-${dia}`;
-      };
+import { User } from '@/types/user' // Type 
 
-    const [user, setUser] = useState<any>(null);
+type Props = {
+    user: User,
+    mealTime: string
+}
 
+export const Table = ({user, mealTime }:Props ) => {
+
+    const refreshTable = async () => {
+        if (!user) {
+            console.warn("Usuário não definido. Não é possível buscar dados.");
+            return; // Saia da função se user não estiver definido
+        }
+    
+        try {
+            const response = await api.get(`/consume/?user_id=${user.id}`, {
+                params: {
+                    data_ingestao: '2024-10-05'
+                }    
+            });
+    
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     
     useEffect(() => {
-        setUser(localStorage.getItem('user'));
-        refreshTable()
-        
-    }, [])
-    
-    const refreshTable = async () => {
-        
-        try {
-            const response = await api.get('/consume/', {
-                params: {
-                    user_id: user.id,
-                    data_ingestao: getDataAtual
-                }    
-            }) 
-
-            console.log(response)
-
-        } catch (error) {
-            console.log(error)
+        if(user) {
+            refreshTable()
         }
-    }
-
+    }, [user])
+    
 
     const [popup, setPopup] = useState<boolean>(false);
     const handleSearchPopup = () => {
-    setPopup(!popup);
+        setPopup(!popup);
     }
-
-    
 
     const basis = 'basis-20 md:basis-28 lg:basis-44';
 

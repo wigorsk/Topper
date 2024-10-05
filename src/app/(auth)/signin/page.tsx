@@ -110,7 +110,7 @@ export default function Home() {
                  <p>{error}</p>
                 }
 
-                <div className='w-full h-0.5 bg-neutral-700'></div>
+                <div className='w-full h-0.5 bg-neutral-700' />
                 <p className="text-center">Não possui uma conta? <Link className='underline' href={'/signup'}>Crie uma agora mesmo!</Link></p>
             </div>
         </div>
