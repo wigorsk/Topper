@@ -37,6 +37,7 @@ export default function Home() {
 
             if (response.data.status) {
                 localStorage.setItem('user', JSON.stringify(response.data.data));
+                console.log(response.data.data)
                 
                 router.push('/');
 
@@ -69,6 +70,7 @@ export default function Home() {
                     {/* Email */}
                     <div className='w-full px-2 bg-neutral-700 border-b-4 border-red-300 flex justify-between items-center'>
                     <input 
+                            // value={'lara@gmail.com'}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email" 
@@ -80,6 +82,7 @@ export default function Home() {
                     {/* Senha */}
                     <div className='w-full px-2 bg-neutral-700 border-b-4 border-red-300 flex justify-between items-center'>
                         <input 
+                            // value={'larinha'}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             type={viewPassword ? 'text' : 'password'} 

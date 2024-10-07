@@ -20,11 +20,25 @@ export const Table = ({user, mealTime }:Props ) => {
             console.warn("Usuário não definido. Não é possível buscar dados.");
             return; // Saia da função se user não estiver definido
         }
-    
+        console.log('ITAQUEXITUBA')
+        console.log(JSON.parse(JSON.stringify(user)))
+
+        const getDate = () => {
+            const date = new Date()
+
+            const ano = date.getFullYear();
+            const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+            const dia = date.getDate().toString().padStart(2, '0');
+
+            return `${ano}-${mes}-${dia}`;
+
+        }
+     
         try {
-            const response = await api.get(`/consume/?user_id=${user.id}`, {
+            const response = await api.get(`user/consume/`, {
                 params: {
-                    data_ingestao: '2024-10-05'
+                    user_id: user.id,
+                    data_ingestao: getDate()
                 }    
             });
     

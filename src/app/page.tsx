@@ -10,21 +10,16 @@ import { Table } from "@/components/Table";
 import { InfosTable } from '@/components/InfosTable';
 import { Footer } from '@/components/Footer';
 
+const getUser = () => {
+  const storedUser = localStorage.getItem('user');
+  if(storedUser == null) return null;
+  return JSON.parse(storedUser);
+}
+
 export default function Home() {
-
-  const [user, setUser] = useState<any>({});
+  
   const router = useRouter();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    
-    if (!storedUser) {
-      router.push('/signin');
-    } else {
-      setUser(JSON.parse(storedUser));
-    }
-    
-  }, [router])
+  const user = getUser() ?? router.push('/signin')
 
   const basis = 'basis-20 md:basis-28 lg:basis-44'
 
