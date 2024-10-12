@@ -3,15 +3,17 @@
 import Link from 'next/link'
 import { useState } from 'react';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import { api } from '@/app/utils/api';
 
 export default function Home() {
 
     // Dados
-    const [name, setName] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [altura, setAltura] = useState<string>('');
     const [peso, setPeso] = useState<string>('');
+    const [idade, setIdade] = useState<string>('');
     const [atividade, setAtividade] = useState<string>('');
     const [sexo, setSexo] = useState<string>('');
 
@@ -32,9 +34,28 @@ export default function Home() {
     }
 
     // REQUISIÇãO AQUI
-    const handleCreateAccount = (e: React.FormEvent) => {
+    const handleCreateAccount = async (e: React.FormEvent) => {
 
         e.preventDefault();
+
+        try {
+            const response = await api.post('/register/', {
+                username,
+                email,
+                senha: password,
+                altura,
+                peso,
+                nivel_atividade: atividade,
+                genero: sexo,
+                idade
+            })
+            .then(function (response){
+                console.log("Success!")
+                console.log(response)
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
     }
 
@@ -50,8 +71,8 @@ export default function Home() {
                 <form onSubmit={handleCreateAccount} className='flex flex-col items-center gap-4'>
                     <div className='w-full px-2 bg-neutral-700 border-b-4 border-blue-300 flex justify-between items-center'>
                         <input 
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             type="text" 
                             className='flex-1 py-2 bg-transparent outline-none text-neutral-100'  
                             placeholder='Nome'
@@ -92,7 +113,7 @@ export default function Home() {
                         
                     </div>
 
-                    <div className='grid grid-cols-2 gap-2'>
+                    <div className='grid grid-cols-3 gap-2'>
 
                         <div className='flex-1 px-2 bg-neutral-700 border-b-4 border-blue-300 flex justify-between items-center'>
                             <input 
@@ -111,6 +132,16 @@ export default function Home() {
                                 type="number" 
                                 className='flex-1 py-2 bg-transparent outline-none text-neutral-100 typeNumber'  
                                 placeholder='Peso (em kg)'
+                            />
+                        </div>
+
+                        <div className='flex-1 px-2 bg-neutral-700 border-b-4 border-blue-300 flex justify-between items-center'>
+                            <input 
+                                value={idade}
+                                onChange={(e) => setIdade(e.target.value)}
+                                type="number" 
+                                className='flex-1 py-2 bg-transparent outline-none text-neutral-100 typeNumber'  
+                                placeholder='Idade'
                             />
                         </div>
 
