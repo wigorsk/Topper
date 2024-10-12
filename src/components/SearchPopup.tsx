@@ -1,15 +1,17 @@
 type Props = {
+    user: User,
     mealTime: string,
+    getDate: () => void,
     onClick: () => void,
-    handleAddButton: () => void
 }
 
 import { Cross1Icon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 import { api } from '@/app/utils/api';
-import { FoodData } from './FoodSearch';
+import { FoodSearch } from './FoodSearch';
+import { User } from '@/types/user';
 
-export const SearchPopup = ( { mealTime, onClick, handleAddButton }: Props) => {
+export const SearchPopup = ( { user, mealTime, getDate, onClick }: Props) => {
 
     const [search, setSearch] = useState<string>('');
     const [foodList, setFoodList] = useState<any[]>([]);
@@ -36,7 +38,6 @@ export const SearchPopup = ( { mealTime, onClick, handleAddButton }: Props) => {
             setFoodList([]);
         }
     }
-
 
     return (
         <div className="absolute top-0 left-0 w-screen h-screen bg-black/50 flex items-center justify-center">
@@ -72,10 +73,11 @@ export const SearchPopup = ( { mealTime, onClick, handleAddButton }: Props) => {
 
             {foodList &&
                 <ul className='mt-5 w-full overflow-y-scroll grid grid-cols-3 gap-5 px-5'>
-
-                    <FoodData 
+                    <FoodSearch
+                        user={user}
+                        getDate={getDate}
+                        mealTime={mealTime}
                         array={foodList}
-                        handleAddButton={handleAddButton}
                     />
                 </ul>
             }

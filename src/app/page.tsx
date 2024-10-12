@@ -22,9 +22,10 @@ export default function Home() {
   const user = getUser() ?? router.push('/signin')
 
   const basis = 'basis-20 md:basis-28 lg:basis-44'
+  console.log(user)
 
   // Gasto Diário
-  const tmb:number = 2100;
+  const tmb:number = user.taxa_metabolica_basal;
   const [dailyExpense, setDailyExpense] = useState<number>(1000)
   const remainingKcal:number = tmb - dailyExpense
 

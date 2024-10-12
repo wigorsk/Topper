@@ -4,9 +4,8 @@ import { FoodTable } from '@/components/FoodTable';
 import { api } from '@/app/utils/api'
 import { useEffect, useState } from 'react';
 
-import alimentos from '@/data/alimentos'; // Data
-
 import { User } from '@/types/user' // Type 
+import { FoodType } from '@/types/food' // Type 
 
 type Props = {
     user: User,
@@ -15,24 +14,25 @@ type Props = {
 
 export const Table = ({user, mealTime }:Props ) => {
 
+    const [list, setList] = useState<FoodType[]>([])
+
+    const getDate = () => {
+        const date = new Date()
+
+        const ano = date.getFullYear();
+        const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+        const dia = date.getDate().toString().padStart(2, '0');
+
+        return `${ano}-${mes}-${dia}`;
+
+    }
+
     const refreshTable = async () => {
         if (!user) {
             console.warn("Usuário não definido. Não é possível buscar dados.");
-            return; // Saia da função se user não estiver definido
+            return;
         }
-        console.log('ITAQUEXITUBA')
-        console.log(JSON.parse(JSON.stringify(user)))
-
-        const getDate = () => {
-            const date = new Date()
-
-            const ano = date.getFullYear();
-            const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-            const dia = date.getDate().toString().padStart(2, '0');
-
-            return `${ano}-${mes}-${dia}`;
-
-        }
+        
      
         try {
             const response = await api.get(`user/consume/`, {
@@ -42,22 +42,26 @@ export const Table = ({user, mealTime }:Props ) => {
                 }    
             });
     
-            console.log(response);
+            setList(response.data.data);
         } catch (error) {
             console.log(error);
         }
     };
-    
+
     useEffect(() => {
         if(user) {
             refreshTable()
         }
     }, [user])
     
-
     const [popup, setPopup] = useState<boolean>(false);
     const handleSearchPopup = () => {
         setPopup(!popup);
+    }
+
+    const closePupup = () => {
+        setPopup(!popup);
+        refreshTable();
     }
 
     const basis = 'basis-20 md:basis-28 lg:basis-44';
@@ -71,22 +75,21 @@ export const Table = ({user, mealTime }:Props ) => {
                     <tr><th className="flex-1 text-start">{mealTime}</th></tr>
                 </thead>
 
-
                 <tbody id={mealTime} className="flex flex-col gap-2">
-
-                    {alimentos.map((item, index) => 
-                        mealTime == item.mealTime ? (
+                    
+                    {/* MOSTRA OS ALIMENTOS ADICIONADOS NA LISTA */}
+                    {list.map((item, index) => 
+                        mealTime == item.meal_time ? (
                         <FoodTable 
                         key={index}
                         foodName={item.nome}
                         gramas={item.gramas}
+                        calorias={item.calorias}
                         carboidratos={item.carboidratos}
                         gorduras={item.gorduras}
                         proteinas={item.proteinas}
                         />
-                    )   : null )
-                        
-                    }
+                    )   : null )}
 
                     <tr className="flex items-center text-center bg-blue-950 text-neutral-100">
                         <td className="flex-1 text-start">
@@ -106,10 +109,11 @@ export const Table = ({user, mealTime }:Props ) => {
             </table>
 
             {popup && 
-                <SearchPopup 
+                <SearchPopup
+                user={user}
+                getDate={getDate}
                 mealTime={mealTime}
-                onClick={handleSearchPopup}
-                handleAddButton={refreshTable}
+                onClick={closePupup}
                 />
             }
 
