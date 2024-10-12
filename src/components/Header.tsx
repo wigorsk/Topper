@@ -5,7 +5,7 @@ type Props = {
 export const Header = ( { username }: Props) => {
 
     return (
-        <div className="w-screen h-24 bg-blue-950 flex">
+        <div className="w-full h-24 bg-blue-950 flex">
 
             <div className='container mx-auto flex items-center justify-between text-white text-2xl font-bold'>
             

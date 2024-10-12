@@ -81,13 +81,17 @@ export const Table = ({user, mealTime }:Props ) => {
                     {list.map((item, index) => 
                         mealTime == item.meal_time ? (
                         <FoodTable 
-                        key={index}
-                        foodName={item.nome}
-                        gramas={item.gramas}
-                        calorias={item.calorias}
-                        carboidratos={item.carboidratos}
-                        gorduras={item.gorduras}
-                        proteinas={item.proteinas}
+                            key={index}
+                            refreshTable={refreshTable}
+                            user_id={(item.user_id)}
+                            meal_time={mealTime}
+                            id={item.id_consume}
+                            foodName={item.nome}
+                            gramas={item.gramas}
+                            calorias={item.calorias}
+                            carboidratos={item.carboidratos}
+                            gorduras={item.gorduras}
+                            proteinas={item.proteinas}
                         />
                     )   : null )}
 
