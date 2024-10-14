@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AuthProvider from "@/contexts/authContext";
 
 export const metadata: Metadata = {
   title: "Nutriclick",
@@ -13,10 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body
-        className={`antialiased overflow-x-hidden`}
-      >
-        {children}
+      <body className={`antialiased overflow-x-hidden`}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
