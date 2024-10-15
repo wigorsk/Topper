@@ -37,7 +37,6 @@ export const Table = ({user, mealTime }:Props ) => {
         try {
             const response = await api.get(`user/consume/`, {
                 params: {
-                    user_id: user.id,
                     data_ingestao: getDate()
                 }    
             });
