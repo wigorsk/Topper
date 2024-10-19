@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { api } from '@/app/utils/api';
 
@@ -17,8 +17,10 @@ export default function Home() {
     const [atividade, setAtividade] = useState<string>('');
     const [sexo, setSexo] = useState<string>('');
 
+
     // Muda o estado da senha
     const [viewPassword, setViewPassword] = useState<boolean>(false)
+
 
     const handleAtividade = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAtividade(e.target.value)
@@ -36,7 +38,6 @@ export default function Home() {
     // REQUISIÇãO AQUI
     const handleCreateAccount = async (e: React.FormEvent) => {
 
-        e.preventDefault();
 
         try {
             const response = await api.post('/register/', {
@@ -68,13 +69,13 @@ export default function Home() {
 
             <div className="w-96 flex flex-col justify-between gap-4">
 
-                <form onSubmit={handleCreateAccount} className='flex flex-col items-center gap-4'>
+                <form onSubmit={handleCreateAccount} className='flex flex-col items-center gap-4 text-neutral-100'>
                     <div className='w-full px-2 bg-neutral-700 border-b-4 border-blue-300 flex justify-between items-center'>
                         <input 
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             type="text" 
-                            className='flex-1 py-2 bg-transparent outline-none text-neutral-100'  
+                            className='flex-1 py-2 bg-transparent outline-none'  
                             placeholder='Nome'
                         />
                     </div>
@@ -84,7 +85,7 @@ export default function Home() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email" 
-                            className='flex-1 py-2 bg-transparent outline-none text-neutral-100'  
+                            className='flex-1 py-2 bg-transparent outline-none'  
                             placeholder='Email'
                         />
                     </div>
@@ -95,32 +96,32 @@ export default function Home() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             type={viewPassword ? 'text' : 'password'} 
-                            className='flex-1 py-2 bg-transparent outline-none text-neutral-100'  
+                            className='flex-1 py-2 bg-transparent outline-none '  
                             placeholder='Password'
                         />
                         
                         {viewPassword  &&
                             <button onClick={tugglePassword} className='p-2'>
-                                <EyeNoneIcon  className='text-neutral-100 size-4'/>
+                                <EyeNoneIcon  className='size-4'/>
                             </button>
                         }
                         
                         {!viewPassword &&
                             <button onClick={tugglePassword} className='p-2'>
-                                <EyeOpenIcon  className='text-neutral-100 size-4'/>
+                                <EyeOpenIcon  className='size-4'/>
                             </button>
                         }  
                         
                     </div>
 
-                    <div className='grid grid-cols-3 gap-2'>
+                    <div className='grid grid-cols-3 gap-4'>
 
                         <div className='flex-1 px-2 bg-neutral-700 border-b-4 border-blue-300 flex justify-between items-center'>
                             <input 
                                 value={altura}
                                 onChange={(e) => setAltura(e.target.value)}
                                 type="number" 
-                                className='flex-1 py-2 bg-transparent outline-none text-neutral-100 typeNumber'  
+                                className='flex-1 py-2 bg-transparent outline-none typeNumber'  
                                 placeholder='Altura (em cm)'
                             />
                         </div>
@@ -130,7 +131,7 @@ export default function Home() {
                                 value={peso}
                                 onChange={(e) => setPeso(e.target.value)}
                                 type="number" 
-                                className='flex-1 py-2 bg-transparent outline-none text-neutral-100 typeNumber'  
+                                className='flex-1 py-2 bg-transparent outline-none typeNumber'  
                                 placeholder='Peso (em kg)'
                             />
                         </div>
@@ -140,73 +141,24 @@ export default function Home() {
                                 value={idade}
                                 onChange={(e) => setIdade(e.target.value)}
                                 type="number" 
-                                className='flex-1 py-2 bg-transparent outline-none text-neutral-100 typeNumber'  
+                                className='flex-1 py-2 bg-transparent outline-none typeNumber'  
                                 placeholder='Idade'
                             />
                         </div>
 
                     </div>
-                    
-                    <div className='w-full p-2 bg-neutral-700 border-b-4 border-blue-300 text-neutral-400 flex flex-col gap-2'>
+
+                    {/* Gênero */}
+                    <div className='w-full bg-neutral-700 text-neutral-400 p-2 border-b-4 border-blue-300'>
                         
-                        <p className='text-center'>Nível de atividade</p>
+                        <p className='font-semibold'>Qual seu gênero?</p>
 
-                        <div className='px-5 grid grid-cols-2 justify-between'>
-                            
-                            <label>
-                                <input 
-                                type="radio" 
-                                value="muito ativo" 
-                                checked={atividade === 'muito ativo'} 
-                                onChange={handleAtividade} 
-                                />
-                                muito ativo
-                            </label>
-                            
-                            <label>
-                                <input 
-                                type="radio" 
-                                value="ativo" 
-                                checked={atividade === 'ativo'} 
-                                onChange={handleAtividade} 
-                                />
-                                ativo
-                            </label>
-
-                            <label>
-                                <input 
-                                type="radio" 
-                                value="levemente ativo" 
-                                checked={atividade === 'levemente ativo'} 
-                                onChange={handleAtividade} 
-                                />
-                                levemente ativo
-                            </label>
-
-                            <label>
-                                <input 
-                                type="radio" 
-                                value="sedentario" 
-                                checked={atividade === 'sedentario'} 
-                                onChange={handleAtividade} 
-                                />
-                                sedentário
-                            </label>
-                        
-                        </div>
-                    
-                    </div>
-
-                    <div className='w-full p-2 bg-neutral-700 border-b-4 border-blue-300 text-neutral-400 flex flex-col gap-2'>
-                        
-                        <p className='text-center'>Sexo</p>
-
-                        <div className='px-5 grid grid-cols-2 justify-between'>
-                            
+                        <div className='text-sm mt-2 flex gap-6'>
                             <label>
                                 <input 
                                 type="radio" 
                                 value="masculino" 
+                                className='mr-2'
                                 checked={sexo === 'masculino'} 
                                 onChange={handleSexo} 
                                 />
@@ -217,15 +169,69 @@ export default function Home() {
                                 <input 
                                 type="radio" 
                                 value="femenino" 
+                                className='mr-2'
                                 checked={sexo === 'femenino'} 
                                 onChange={handleSexo} 
                                 />
                                 femenino
                             </label>
+                        </div>
                         
+                        
+                    </div>
+
+                    {/* Nível de Atividade física */}
+                    <div className='w-full bg-neutral-700 text-neutral-400 p-2 border-b-4 border-blue-300'>
+                        
+                        <p className='font-semibold'>Qual é o seu nível de atividade física?</p>
+                        <p className='text-xs'>Leve em consideração uma pessoa muito ativa sendo aquela que tem trabalhos agitados como garçom, pedreiro, bombeiro, etc. </p>
+
+                        <div className='text-sm mt-2 flex flex-col'>
+
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    value="muito ativo" 
+                                    className='mr-2'
+                                    checked={atividade === 'muito ativo'} 
+                                    onChange={handleAtividade} 
+                                /> muito ativo
+                            </label>
+                            
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    value="ativo" 
+                                    className='mr-2'
+                                    checked={atividade === 'ativo'} 
+                                    onChange={handleAtividade} 
+                                /> ativo
+                            </label>
+
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    value="levemente ativo" 
+                                    className='mr-2'
+                                    checked={atividade === 'levemente ativo'} 
+                                    onChange={handleAtividade} 
+                                /> levemente ativo
+                            </label>
+
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    value="sedentario" 
+                                    className='mr-2'
+                                    checked={atividade === 'sedentario'} 
+                                    onChange={handleAtividade} 
+                                /> sedentário
+                            </label>
                         </div>
                     
                     </div>
+
+                    
                     
                     <button 
                         type='submit'
