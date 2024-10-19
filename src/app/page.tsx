@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className="w-screen bg-neutral-100">
       
-        <Header username={user.username} /> 
+        <Header username={user?.username} /> 
 
           <div className="container mx-auto flex flex-col items-center py-6 gap-6">
             <Section/>

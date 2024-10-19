@@ -2,7 +2,7 @@
 
 import { api } from "@/app/utils/api";
 import { FoodType } from "@/types/food";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createContext } from "react";
 
 type TableContextProps = {

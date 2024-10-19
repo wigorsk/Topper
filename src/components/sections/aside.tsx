@@ -9,13 +9,13 @@ const Aside = ( { user }: { user: User } ) => {
         return (tmb - expense)
     }
 
-    const rest = subtracao(user.taxa_metabolica_basal, dailyExpense == null ? 0 : dailyExpense)
+    const rest = subtracao(user?.taxa_metabolica_basal, dailyExpense == null ? 0 : dailyExpense)
 
     return (
         <div className="text-2xl font-semibold mb-6 flex gap-5">
             
             <div className="flex items-end gap-1">
-                 {user.taxa_metabolica_basal} 
+                 {user?.taxa_metabolica_basal} 
                  <p className="font-normal text-sm">tmb</p>
             </div> -
 
@@ -27,7 +27,7 @@ const Aside = ( { user }: { user: User } ) => {
 
             <div className="flex items-end gap-1"> 
                 {rest} 
-                <p className="font-normal text-sm">kcal</p>
+                <p className="font-normal text-sm">kcals restantes</p>
             </div>
 
         </div>
