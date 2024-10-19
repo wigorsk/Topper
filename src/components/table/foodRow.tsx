@@ -1,12 +1,11 @@
-import { useState } from "react"
-import { Popup } from "./popup"
+import { useContext, useEffect, useState } from "react"
+import { Popup } from "../popup"
 import { api } from "@/app/utils/api"
+import { TableContext } from "@/contexts/tableContext"
 
 type Props = {
-    user_id: number,
     meal_time: string,
-    id: number,
-    refreshTable: () => void,
+    consume_id: number,
     foodName: string,
     calorias: number,
     gramas: number,
@@ -15,12 +14,24 @@ type Props = {
     proteinas: number,
 }   
 
-const basis = 'basis-20 md:basis-28 lg:basis-44'
+const basis = 'basis-20 md:basis-28 lg:basis-44 text-xs sm:text-sm md:text-base';
 
+const FoodRow = ({ meal_time, consume_id, foodName, calorias, gramas, carboidratos, gorduras, proteinas }:Props) => {
 
-export const FoodTable = ({ user_id, meal_time, id, refreshTable, foodName, calorias, gramas, carboidratos, gorduras, proteinas }:Props) => {
+    const { refreshTable } = useContext(TableContext)
 
     const [popup, setPopup] = useState<boolean>(false)
+    useEffect(() => {
+        if (popup) {
+            document.body.style.overflow = 'hidden'
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+            refreshTable()
+        }
+
+    }, [popup])
 
     const [newGrams, setNewGrams] = useState<number>(gramas)
 
@@ -36,36 +47,35 @@ export const FoodTable = ({ user_id, meal_time, id, refreshTable, foodName, calo
     const handleEditButton = async () => {
         try {
             const response = await api.put('/user/consume/', {
-                id: id,
+                id: consume_id,
                 gramas: newGrams
             })
-
-            console.log(response)
-        } catch (error) {
+            refreshTable()
+        } 
+        catch (error) {
             console.log(error)
         }
-
-        refreshTable()
+        
         setPopup(!popup)
+
     }
 
     const handleDeleteButton = async () => {
-        console.log(meal_time)
         try {
             const response = await api.delete('/user/consume/', {
                 data: {
-                    id,
+                    id: consume_id,
                     meal_time
                 }
             })
-                console.log(response)
-                
-            } catch (error) {
-                console.log(error)
-            }
+            refreshTable()    
+        } 
+        catch (error) {
+            console.log(error)
+        }
 
-            refreshTable()
-            setPopup(!popup)
+        setPopup(!popup)
+
     }
 
     return (
@@ -121,3 +131,5 @@ export const FoodTable = ({ user_id, meal_time, id, refreshTable, foodName, calo
         </>
     )
 }
+
+export default FoodRow;

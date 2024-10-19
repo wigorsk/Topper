@@ -9,7 +9,7 @@ import Footer from '@/components/sections/footer';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  
+
   const getUser = () => {
     const storedUser = localStorage.getItem('user');
     if(storedUser == null) return null;
@@ -18,6 +18,7 @@ export default function Home() {
 
   const router = useRouter(); 
   const user = getUser() ?? router.push('/signin')
+
 
   return (
     <div className="w-screen bg-neutral-100">
@@ -32,6 +33,8 @@ export default function Home() {
           </div>
           
         <Footer />
+
+
     </div>
   )
 }

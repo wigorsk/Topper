@@ -1,6 +1,5 @@
 import { api } from '@/app/utils/api'
-import { FoodType } from '@/types/food'
-import { User } from '@/types/user' // Type 
+import { User } from '@/types/user'
 import { useState } from 'react'
 
 type Props = {
@@ -10,7 +9,7 @@ type Props = {
     array: any[],
 }
 
-export const FoodSearch = ({user, getDate, mealTime, array}:Props) => {
+export const Infos = ({user, getDate, mealTime, array}:Props) => {
 
     const [inputValues, setInputValues] = useState<{ [key: number]: number }>({});
 
@@ -27,20 +26,16 @@ export const FoodSearch = ({user, getDate, mealTime, array}:Props) => {
         if(gramas == undefined || gramas == 0) return alert('digite um valor válido')
 
         try {
-
             const response = api.post('/user/consume/', {
                 user_id: user.id,
-                food_id,
+                food_id: food_id,
                 data_ingestao: getDate(),
                 meal_time: mealTime,
-                gramas
+                gramas: gramas,
             })
-            .then(function(response) {
-                console.log("Success!")
-                console.log(response)
-            })
-
-        } catch (error) {
+            handleInputChange(food_id, 0)
+        } 
+        catch (error) {
             console.log(error)
         }
 
@@ -54,7 +49,7 @@ export const FoodSearch = ({user, getDate, mealTime, array}:Props) => {
                     <div>
                         <p className='capitalize font-bold text-2xl'>{food.nome}</p>
                         <input 
-                        value={inputValues[food.id] !== undefined ? inputValues[food.id] : ''} 
+                        value={inputValues[food.id] === undefined || inputValues[food.id] == 0 ? '' : inputValues[food.id]} 
                         onChange={(e)=> handleInputChange(food.id, Number(e.target.value))}
                         type="number"
                         placeholder='Quantidade em gramas' 

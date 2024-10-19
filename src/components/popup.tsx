@@ -10,7 +10,7 @@ export const Popup = ({ children, onClick }:Props) => {
     return (
         <tr>
             <td>
-                <div className="absolute top-0 left-0 w-full h-screen bg-black/50 flex items-center justify-center">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
                     <div className="w-80 p-2 bg-neutral-100">
 
                         <div className="w-full flex justify-end">

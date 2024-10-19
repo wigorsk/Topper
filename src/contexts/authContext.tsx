@@ -1,7 +1,6 @@
 "use client"
 
 import { api } from "@/app/utils/api";
-import { User } from "@/types/user";
 import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useEffect, useState } from "react";
 
@@ -34,7 +33,7 @@ const AuthProvider = ({ children }:Props) => {
             } else {
                 setError('Email ou senha incorretos!');
             }
-
+            
         } catch (error) {
            console.error('Erro na requisição:', error);
            setError('Ocorreu um erro. Tente novamente mais tarde.');

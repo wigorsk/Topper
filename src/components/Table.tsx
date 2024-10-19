@@ -1,90 +1,85 @@
-import { SearchPopup } from '@/components/SearchPopup';
-import { FoodTable } from '@/components/FoodTable';
+"use client"
 
-import { api } from '@/app/utils/api'
-import { useEffect, useState } from 'react';
+import FoodRow from '@/components/table/foodRow';
+
+import { useContext, useEffect, useState } from 'react';
 
 import { User } from '@/types/user' // Type 
-import { FoodType } from '@/types/food' // Type 
+import { TableContext } from '@/contexts/tableContext';
 
-type Props = {
-    user: User,
-    mealTime: string
+import Thead from './table/thead';
+import TotalsRow from '@/components/table/totalsRow';
+import Search from './add/search';
+import { FoodType } from '@/types/food';
+
+interface Macronutrientes {
+    calorias: number;
+    carboidratos: number;
+    gorduras: number;
+    proteinas: number;
 }
 
-export const Table = ({user, mealTime }:Props ) => {
-
-    const [list, setList] = useState<FoodType[]>([])
-
-    const getDate = () => {
-        const date = new Date()
-
-        const ano = date.getFullYear();
-        const mes = (date.getMonth() + 1).toString().padStart(2, '0');
-        const dia = date.getDate().toString().padStart(2, '0');
-
-        return `${ano}-${mes}-${dia}`;
-
-    }
-
-    const refreshTable = async () => {
-        if (!user) {
-            console.warn("Usuário não definido. Não é possível buscar dados.");
-            return;
-        }
-        
-     
-        try {
-            const response = await api.get(`user/consume/`, {
-                params: {
-                    data_ingestao: getDate()
-                }    
-            });
+export const Table = ({user, mealTime }: {user: User, mealTime: string}) => {
     
-            setList(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const { refreshTable, expense, list } = useContext(TableContext);
+    
+    useEffect(()=> {
+        refreshTable()
+    }, [user])
 
+    const [searchModal, setSearchModal] = useState<boolean>(false);
     useEffect(() => {
-        if(user) {
+        if (searchModal) {
+            document.body.style.overflow = 'hidden'
+        }
+
+        return () => {
+            document.body.style.overflow = '';
             refreshTable()
         }
-    }, [user])
+
+    }, [searchModal])
+
+    const [totals, setTotals] = useState<Macronutrientes | null>(null);
+    useEffect(() => {
+
+        if (list == null || list.length <= 0) return
+
+        const soma = (list: FoodType[]): Macronutrientes => {
+            return list.reduce<Macronutrientes>((acumulador, food) => {
+                    acumulador.calorias += food.calorias;
+                    acumulador.carboidratos += food.carboidratos;
+                    acumulador.gorduras += food.gorduras;
+                    acumulador.proteinas += food.proteinas;
+                    return acumulador;
+                }, { calorias: 0, carboidratos: 0, gorduras: 0, proteinas: 0 });
+        };
+            
+        const newList = list.filter((food) => food.meal_time == mealTime)
+        setTotals( soma(newList) );
+
+        const kcalTotal = list.reduce((acumulador, food) => {
+            return acumulador + food.calorias
+        }, 0 ) 
+
+        expense(kcalTotal)
+        
+    }, [list]);
+
     
-    const [popup, setPopup] = useState<boolean>(false);
-    const handleSearchPopup = () => {
-        setPopup(!popup);
-    }
-
-    const closePupup = () => {
-        setPopup(!popup);
-        refreshTable();
-    }
-
-    const basis = 'basis-20 md:basis-28 lg:basis-44';
 
     return (
-        <div>
+        <>  
 
             <table className="flex flex-col">
-                
-                <thead className="font-bold text-sm sm:text-lg md:text-xl xl:text-2xl">
-                    <tr><th className="flex-1 text-start">{mealTime}</th></tr>
-                </thead>
+                <Thead mealTime={mealTime}/>
+                <tbody className='flex flex-col gap-2'>
 
-                <tbody id={mealTime} className="flex flex-col gap-2">
-                    
-                    {/* MOSTRA OS ALIMENTOS ADICIONADOS NA LISTA */}
-                    {list.map((item, index) => 
-                        mealTime == item.meal_time ? (
-                        <FoodTable 
-                            key={index}
-                            refreshTable={refreshTable}
-                            user_id={(item.user_id)}
+                    {list !== null && list.map((item) => mealTime == item.meal_time ? (
+                        <FoodRow 
+                            key={item.id_consume}
                             meal_time={mealTime}
-                            id={item.id_consume}
+                            consume_id={item.id_consume}
                             foodName={item.nome}
                             gramas={item.gramas}
                             calorias={item.calorias}
@@ -92,33 +87,26 @@ export const Table = ({user, mealTime }:Props ) => {
                             gorduras={item.gorduras}
                             proteinas={item.proteinas}
                         />
-                    )   : null )}
+                    ) : null )}
 
-                    <tr className="flex items-center text-center bg-blue-950 text-neutral-100">
-                        <td className="flex-1 text-start">
-                        <button 
-                            onClick={handleSearchPopup}
-                            className="px-5 md:px-10 py-2 text-xs sm:text-sm md:text-base" 
-                            >Adicionar</button>
-                        </td>
-                        <td className={`${basis}`}>...</td>
-                        <td className={`${basis}`}>...</td>
-                        <td className={`${basis}`}>...</td>
-                        <td className={`${basis}`}>...</td>
-                    </tr>
-                
+                    <TotalsRow 
+                        kcal={totals?.calorias.toFixed(2)}
+                        carb={totals?.carboidratos.toFixed(2)}
+                        gord={totals?.gorduras.toFixed(2)}
+                        prot={totals?.proteinas.toFixed(2)}
+                        onClick={() => setSearchModal(!searchModal)} 
+                    /> 
+
                 </tbody>
-
             </table>
 
-            {popup && 
-                <SearchPopup
-                user={user}
-                getDate={getDate}
-                mealTime={mealTime}
-                onClick={closePupup}
+            {searchModal && 
+                <Search
+                    user={user}
+                    mealTime={mealTime}
+                    onClick={() => setSearchModal(!searchModal)}
                 />
             }
-
-        </div>
-)}
+        </>
+    )
+}

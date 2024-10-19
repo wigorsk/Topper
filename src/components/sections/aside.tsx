@@ -1,13 +1,35 @@
+import { TableContext } from "@/contexts/tableContext";
 import { User } from "@/types/user";
-import { useState } from "react"
+import { useContext, useState } from "react"
 
 const Aside = ( { user }: { user: User } ) => {
+    const { dailyExpense } = useContext(TableContext)
 
-    const [dailyExpense, setDailyExpense] = useState<number>(1000)
+    const subtracao = (tmb: number, expense: number) => {
+        return (tmb - expense)
+    }
+
+    const rest = subtracao(user.taxa_metabolica_basal, dailyExpense == null ? 0 : dailyExpense)
 
     return (
-        <p className="text-2xl font-bold mb-6">
-            {user.taxa_metabolica_basal} - {dailyExpense} = {user.taxa_metabolica_basal - dailyExpense}
+        <p className="text-2xl font-semibold mb-6 flex gap-5">
+            
+            <div className="flex items-end gap-1">
+                 {user.taxa_metabolica_basal} 
+                 <p className="font-normal text-sm">tmb</p>
+            </div> -
+
+            <div className="flex items-end gap-1">
+                {dailyExpense == null ? 0 : dailyExpense.toFixed(2)}
+                <p className="font-normal text-sm">kcal</p>
+
+            </div> =
+
+            <div className="flex items-end gap-1"> 
+                {rest} 
+                <p className="font-normal text-sm">kcal</p>
+            </div>
+
         </p>
     )
 }
