@@ -1,3 +1,5 @@
+import { FoodType } from "@/types/food";
+
 type Props = {
     onClick: () => void;
     kcal: string | undefined;
@@ -9,6 +11,7 @@ type Props = {
 const TotalsRow = ({ onClick, kcal, carb, gord, prot }: Props) => {
 
     const basis = 'basis-20 md:basis-28 lg:basis-44 text-xs sm:text-sm md:text-base';
+
 
     return (
         <tr className="flex items-center text-center bg-blue-950 text-neutral-100">
@@ -22,6 +25,7 @@ const TotalsRow = ({ onClick, kcal, carb, gord, prot }: Props) => {
             <td className={`${basis}`}>{carb}g</td>
             <td className={`${basis}`}>{gord}g</td>
             <td className={`${basis}`}>{prot}g</td>
+            
         </tr>
     )
 }

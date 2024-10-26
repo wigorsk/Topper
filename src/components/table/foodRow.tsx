@@ -18,7 +18,7 @@ const basis = 'basis-20 md:basis-28 lg:basis-44 text-xs sm:text-sm md:text-base'
 
 const FoodRow = ({ meal_time, consume_id, foodName, calorias, gramas, carboidratos, gorduras, proteinas }:Props) => {
 
-    const { refreshTable } = useContext(TableContext)
+    const { refreshTable, setList, expense } = useContext(TableContext)
 
     const [popup, setPopup] = useState<boolean>(false)
     useEffect(() => {
@@ -68,7 +68,13 @@ const FoodRow = ({ meal_time, consume_id, foodName, calorias, gramas, carboidrat
                     meal_time
                 }
             })
-            refreshTable()    
+
+            if(response.status === 204) {
+                setList((prevList) => prevList?.filter(item => item.id_consume !== item.id_consume) || null)
+                expense(0)
+                refreshTable()    
+            }
+            
         } 
         catch (error) {
             console.log(error)

@@ -22,6 +22,8 @@ interface Macronutrientes {
 export const Table = ({user, mealTime }: {user: User, mealTime: string}) => {
     
     const { refreshTable, expense, list } = useContext(TableContext);
+
+    if (!list) return
     
     useEffect(()=> {
         refreshTable()
@@ -42,32 +44,38 @@ export const Table = ({user, mealTime }: {user: User, mealTime: string}) => {
 
     const [totals, setTotals] = useState<Macronutrientes | null>(null);
     useEffect(() => {
-
-        if (list == null || list.length <= 0) return
-
+        
+        if (list.length === 0) {
+            setTotals({ calorias: 0, carboidratos: 0, gorduras: 0, proteinas: 0 });
+            return;
+        }
+        
         const soma = (list: FoodType[]): Macronutrientes => {
             return list.reduce<Macronutrientes>((acumulador, food) => {
-                    acumulador.calorias += food.calorias;
-                    acumulador.carboidratos += food.carboidratos;
-                    acumulador.gorduras += food.gorduras;
-                    acumulador.proteinas += food.proteinas;
-                    return acumulador;
-                }, { calorias: 0, carboidratos: 0, gorduras: 0, proteinas: 0 });
+                acumulador.calorias += food.calorias;
+                acumulador.carboidratos += food.carboidratos;
+                acumulador.gorduras += food.gorduras;
+                acumulador.proteinas += food.proteinas;
+                return acumulador;
+            }, { calorias: 0, carboidratos: 0, gorduras: 0, proteinas: 0 });
         };
-            
-        const newList = list.filter((food) => food.meal_time == mealTime)
-        setTotals( soma(newList) );
-
+        
+        const newList = list.filter((food) => food.meal_time === mealTime)
+        if (newList.length === 0) {
+            setTotals({ calorias: 0, carboidratos: 0, gorduras: 0, proteinas: 0 });
+        } else {
+            setTotals(soma(newList));
+        }
+        
         const kcalTotal = list.reduce((acumulador, food) => {
             return acumulador + food.calorias
         }, 0 ) 
-
+        
         expense(kcalTotal)
         
+        console.log('Atualização de kcal totais:', kcalTotal);
     }, [list]);
-
     
-
     return (
         <>  
 
@@ -77,7 +85,7 @@ export const Table = ({user, mealTime }: {user: User, mealTime: string}) => {
 
                     {list !== null && list.map((item) => mealTime == item.meal_time ? (
                         <FoodRow 
-                            key={item.id_consume}
+                        key={item.id_consume}
                             meal_time={mealTime}
                             consume_id={item.id_consume}
                             foodName={item.nome}
@@ -86,8 +94,8 @@ export const Table = ({user, mealTime }: {user: User, mealTime: string}) => {
                             carboidratos={item.carboidratos}
                             gorduras={item.gorduras}
                             proteinas={item.proteinas}
-                        />
-                    ) : null )}
+                            />
+                        ) : null )}
 
                     <TotalsRow 
                         kcal={totals?.calorias.toFixed(2)}

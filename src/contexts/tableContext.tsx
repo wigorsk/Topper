@@ -9,14 +9,15 @@ type TableContextProps = {
     getDate: () => void;
     refreshTable: () => void;
     expense: (n: number) => void;
-    list: FoodType[] | null;
+    setList: React.Dispatch<React.SetStateAction<FoodType[]>>;
+    list: FoodType[];
     dailyExpense: number | null;
 }
 export const TableContext = createContext<TableContextProps>({} as TableContextProps);
 
 const TableProvider = ( { children }: { children: ReactNode } ) => {
 
-    const [ list, setList ] = useState<FoodType[] | null>(null)
+    const [ list, setList ] = useState<FoodType[]>([])
     const [dailyExpense, setDailyExpense] = useState<number | null>(null)
 
 
@@ -39,14 +40,14 @@ const TableProvider = ( { children }: { children: ReactNode } ) => {
                     data_ingestao: getDate()
                 }    
             });
-            setList(response.data.data);
+            setList(response.data.data || []);
         } 
 
         catch (error) {
-            console.log(error);
         }
 
     };
+    
 
     const expense = (n: number) => {
         setDailyExpense(n)
@@ -54,7 +55,7 @@ const TableProvider = ( { children }: { children: ReactNode } ) => {
     
 
     return (
-        <TableContext.Provider value={{ refreshTable, getDate, expense, list, dailyExpense }}>
+        <TableContext.Provider value={{ refreshTable, getDate, expense, setList, list, dailyExpense }}>
             { children }
         </TableContext.Provider>
     )

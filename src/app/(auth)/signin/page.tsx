@@ -27,7 +27,7 @@ export default function Home() {
 
     useEffect(() => {
         setHasError(false)
-    }, [email])
+    }, [email, password])
 
     return (
         <div className="w-screen h-screen bg-neutral-100 flex flex-col items-center justify-center gap-10">

@@ -42,7 +42,7 @@ const Search = ( { user, mealTime, onClick }: Props) => {
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="w-2/4 h-3/4 pb-10 bg-neutral-100 flex flex-col items-center">
+          <div className="w-full sm:w-3/4 lg:w-2/4 h-3/4 pb-10 bg-neutral-100 flex flex-col items-center">
 
             <div className="w-full flex justify-end">
               <button className="p-2" onClick={onClick}>
@@ -50,25 +50,26 @@ const Search = ( { user, mealTime, onClick }: Props) => {
               </button>
             </div>
             
-            <div className="flex gap-5">
+            <div className="grid grid-cols-3 px-5">
 
                 <input 
                     type="text" 
                     placeholder="Pesquisar alimento"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)} 
-                    className="px-2 py-1 outline-none bg-transparent border-b border-neutral-950"
+                    className="text-sm md:text-base px-2 py-1 col-span-2 outline-none bg-transparent border-b border-neutral-950"
                 />
 
                 <button 
                     type='submit'
                     onClick={handleAddButton}
-                    className='bg-blue-900 px-4 rounded-lg text-white font-bold'
+                    className='text-sm md:text-base bg-blue-900 mx-2 px-2 md:px-4 py-2 md:py-1 rounded-lg text-white font-bold'
                 >buscar</button>
+
+                <p className="text-xs text-center pt-2 col-span-3">Os macronutrientes levam em consideração uma quantidade base de 50g.</p>
 
             </div>
 
-            <p className="text-xs pt-2">Os macronutrientes levam em consideração uma quantidade base de 50g.</p>
 
             {error && <div className='h-full w-full flex items-center justify-center'><p>{error}</p></div>}
 
