@@ -1,9 +1,10 @@
 "use client"
 
 import Link from 'next/link'
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { api } from '@/app/utils/api';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
     const [atividade, setAtividade] = useState<string>('');
     const [sexo, setSexo] = useState<string>('');
 
+    const router = useRouter();
 
     // Muda o estado da senha
     const [viewPassword, setViewPassword] = useState<boolean>(false)
@@ -38,6 +40,7 @@ export default function Home() {
     // REQUISIÇãO AQUI
     const handleCreateAccount = async (e: React.FormEvent) => {
 
+        e.preventDefault()
 
         try {
             const response = await api.post('/register/', {
@@ -50,10 +53,9 @@ export default function Home() {
                 genero: sexo,
                 idade
             })
-            .then(function (response){
-                console.log("Success!")
-                console.log(response)
-            })
+            router.push('/signin')
+            
+
         } catch (error) {
             console.log(error)
         }
@@ -247,5 +249,6 @@ export default function Home() {
             </div>
 
         </div>
+
     </div>
 )}

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const Footer = () => {
     return (
-        <div className="w-full h-60 bg-neutral-950 text-neutral-100 flex flex-col items-center justify-center">
+        <div className="w-full h-60 bg-neutral-950 text-neutral-400 flex flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">Nutriclick</h1>
             <h3 >Projeto Extensionista da FSG</h3>
             <p className="text-xs italic mt-5">Trabalho desenvolvido por:</p>

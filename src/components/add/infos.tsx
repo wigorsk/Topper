@@ -24,7 +24,7 @@ export const Infos = ({user, getDate, mealTime, array}:Props) => {
     const [hasError, setHasError] = useState<boolean>(false)
     const handleAddFood = async (food_id:number) => {
         const gramas = inputValues[food_id]
-        if(gramas == undefined || gramas == 0) {
+        if(gramas == undefined || gramas <= 0) {
             setHasError(!hasError)
             setTimeout(() => {
                 setHasError(false)

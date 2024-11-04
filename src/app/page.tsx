@@ -25,10 +25,9 @@ export default function Home() {
       
         <Header username={user?.username} /> 
 
-          <div className="container mx-auto flex flex-col items-center py-6 gap-6">
-            <Section/>
-            <hr className="w-screen"/>
+          <div className="container mx-auto flex flex-col items-center py-10 gap-10">
             <Aside user={user}/>
+            <hr className="w-screen"/>
             <Main user={user}/>
           </div>
           
